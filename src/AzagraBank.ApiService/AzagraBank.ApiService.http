@@ -1,0 +1,6 @@
+@AzagraBank.ApiService_HostAddress = http://localhost:5299
+
+GET {{AzagraBank.ApiService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
