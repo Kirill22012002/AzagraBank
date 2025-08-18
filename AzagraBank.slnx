@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/AzagraBank.AppHost/AzagraBank.AppHost.csproj" />
+  <Project Path="src/AzagraBank.ServiceDefaults/AzagraBank.ServiceDefaults.csproj" />
+</Solution>
