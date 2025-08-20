@@ -18,8 +18,7 @@ var api = builder.AddProject<Projects.AzagraBank_ApiService>("azagrabank-apiserv
 var client = builder.AddNpmApp("react", "../AzagraBank.Client")
     .WithReference(api)
     .WaitFor(api)
-    .WithHttpEndpoint(env: "PORT")
-    .WithExternalHttpEndpoints()
+    .WithHttpEndpoint(port: 5173, targetPort: 5174, env: "PORT")
     .PublishAsDockerFile();
 
 builder.Build().Run();

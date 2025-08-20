@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+const URL = process.env.AZAGRABANK_API_URL;
+
 function App() {
   const [forecasts, setForecasts] = useState<any>([])
 
   const requestWeather = async () => {
-    const weather = await fetch("https://localhost:7037/api/weatherforecast");
+    const weather = await fetch(`${URL}/api/weatherforecast`);
     const weatherJson = await weather.json();
     setForecasts(weatherJson);
   }
