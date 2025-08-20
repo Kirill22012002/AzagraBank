@@ -1,14 +1,18 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var db = builder.AddPostgres("pgsql").AddDatabase("azagra-bank-db");
+var postgres = builder.AddPostgres("pgsql")
+    .WithPgAdmin()
+    .WithLifetime(ContainerLifetime.Persistent);
 
-var redis = builder.AddRedis("redis");
+var azagraBankDb = postgres.AddDatabase("azagra-bank-db");
+
+var azagraBankCache = builder.AddRedis("azagra-bank-cache");
 
 var api = builder.AddProject<Projects.AzagraBank_ApiService>("azagrabank-apiservice")
-    .WithReference(db)
-    .WaitFor(db)
-    .WithReference(redis)
-    .WaitFor(redis)
+    .WithReference(azagraBankDb)
+    .WaitFor(azagraBankDb)
+    .WithReference(azagraBankCache)
+    .WaitFor(azagraBankCache)
     .WithExternalHttpEndpoints();
 
 var client = builder.AddNpmApp("react", "../AzagraBank.Client")
