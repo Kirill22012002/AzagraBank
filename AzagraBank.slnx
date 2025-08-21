@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="src/AzagraBank.ApiService/AzagraBank.ApiService.csproj" />
   <Project Path="src/AzagraBank.AppHost/AzagraBank.AppHost.csproj" />
+  <Project Path="src/AzagraBank.Messages/AzagraBank.Messages.csproj" Id="7550d081-49be-4b7c-9a3e-1c8acb07d19e" />
   <Project Path="src/AzagraBank.ServiceDefaults/AzagraBank.ServiceDefaults.csproj" />
 </Solution>

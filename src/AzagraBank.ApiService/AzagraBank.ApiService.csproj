@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AzagraBank.Messages\AzagraBank.Messages.csproj" />
     <ProjectReference Include="..\AzagraBank.ServiceDefaults\AzagraBank.ServiceDefaults.csproj" />
   </ItemGroup>
 
