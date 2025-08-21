@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-const URL = process.env.AZAGRABANK_API_URL;
+const URL = import.meta.env.VITE_AZAGRABANK_API_URL;
 
 function App() {
   const [forecasts, setForecasts] = useState<any>([])
