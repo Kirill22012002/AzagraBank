@@ -1,5 +1,7 @@
-﻿using AzagraBank.Messages.Commands;
+﻿using AzagraBank.ApiService.Services;
+using AzagraBank.Messages.Commands;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AzagraBank.ApiService.Controllers;
 
@@ -7,6 +9,13 @@ namespace AzagraBank.ApiService.Controllers;
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
+    private readonly IProducerService _producerService;
+
+    public AccountController(IProducerService producerService)
+    {
+        _producerService = producerService;
+    }
+
     [HttpGet(Name = "deposit")]
     public IActionResult Deposit([FromQuery] int amount)
     {
@@ -17,7 +26,7 @@ public class AccountController : ControllerBase
             Amount = amount
         };
 
-        // send to message broker
+        _producerService.SendMessageAsync("commands", JsonConvert.SerializeObject(depositCommand));
 
         return Ok();
     }
@@ -32,7 +41,7 @@ public class AccountController : ControllerBase
             Amount = amount
         };
 
-        // send to message broker
+        _producerService.SendMessageAsync("commands", JsonConvert.SerializeObject(withdrawCommand));
 
         return Ok();
     }

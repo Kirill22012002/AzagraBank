@@ -1,8 +1,15 @@
+using AzagraBank.ApiService.Services;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
 builder.AddRedisOutputCache("azagra-bank-cache");
+
+builder.Services.AddSerilog();
+
+builder.Services.AddSingleton<IProducerService, ProducerService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
