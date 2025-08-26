@@ -1,6 +1,7 @@
 ﻿using Confluent.Kafka;
+using Microsoft.Extensions.Logging;
 
-namespace AzagraBank.ApiService.Services;
+namespace AzagraBank.EventBus;
 
 public class ProducerService : IProducerService
 {

@@ -1,8 +1,11 @@
 <Solution>
+  <Folder Name="/Tests/" />
   <Project Path="src/AzagraBank.ApiService/AzagraBank.ApiService.csproj" />
   <Project Path="src/AzagraBank.AppHost/AzagraBank.AppHost.csproj" />
   <Project Path="src/AzagraBank.CommandProcessor/AzagraBank.CommandProcessor.csproj" Id="c4e0d79c-6015-44a9-a654-5b8f2fe88c67" />
+  <Project Path="src/AzagraBank.EF/AzagraBank.EF.csproj" Id="ef5ad22c-8566-4dec-88a4-99e8ef9f92b1" />
   <Project Path="src/AzagraBank.EventBus/AzagraBank.EventBus.csproj" Id="ab71bd95-2cc0-4d1b-aa12-a18367363fb5" />
+  <Project Path="src/AzagraBank.EventProcessor/AzagraBank.EventProcessor.csproj" Id="df75613b-b73c-460b-a5fa-e3a2918a1a01" />
   <Project Path="src/AzagraBank.Messages/AzagraBank.Messages.csproj" Id="7550d081-49be-4b7c-9a3e-1c8acb07d19e" />
   <Project Path="src/AzagraBank.ServiceDefaults/AzagraBank.ServiceDefaults.csproj" />
 </Solution>

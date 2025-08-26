@@ -1,30 +1,20 @@
 ﻿using AzagraBank.EventBus;
-using AzagraBank.Messages;
 using Confluent.Kafka;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
-namespace AzagraBank.CommandProcessor.Services;
+namespace AzagraBank.EventProcessor.Services;
 
 public class ConsumerService : IConsumerService
 {
     private readonly IConsumer<string, string> _consumer;
     private readonly ILogger<ConsumerService> _logger;
-    private readonly ICommandProcessor _commandProcessor;
-    private readonly IProducerService _producerService;
 
-    public ConsumerService(
-        ILogger<ConsumerService> logger,
-        ICommandProcessor commandProcessor,
-        IProducerService producerService)
+    public ConsumerService(ILogger<ConsumerService> logger)
     {
         _logger = logger;
-        _commandProcessor = commandProcessor;
-        _producerService = producerService;
         var config = new ConsumerConfig
         {
             BootstrapServers = "localhost:9092",
-            GroupId = "commands-group",
+            GroupId = "events-group",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
 
@@ -40,13 +30,9 @@ public class ConsumerService : IConsumerService
             {
                 var consumeResult = _consumer.Consume();
                 _logger.LogInformation("Consumed message: {kafka_message}", consumeResult.Message.Value);
-
-                var command = JsonConvert.DeserializeObject<Command>(consumeResult.Message.Value);
-                var @event = await _commandProcessor.ProcessCommandAsync(command);
-                await _producerService.SendMessageAsync("events", JsonConvert.SerializeObject(@event));
             }
         }
-        catch(ConsumeException ex)
+        catch (ConsumeException ex)
         {
             _logger.LogError("Error consuming message: {error}", ex.Error.Reason);
         }

@@ -1,4 +1,4 @@
-﻿namespace AzagraBank.ApiService.Services;
+﻿namespace AzagraBank.EventBus;
 
 public interface IProducerService
 {

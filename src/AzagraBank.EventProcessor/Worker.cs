@@ -1,8 +1,6 @@
-﻿using AzagraBank.EventBus;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using AzagraBank.EventBus;
 
-namespace AzagraBank.CommandProcessor;
+namespace AzagraBank.EventProcessor;
 
 public class Worker : BackgroundService
 {
@@ -18,6 +16,6 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Start {name_of_service}", nameof(Worker));
-        await _consumerService.ConsumeMessagesAsync(topic: "commands");
+        await _consumerService.ConsumeMessagesAsync(topic: "events");
     }
 }

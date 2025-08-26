@@ -1,4 +1,4 @@
-using AzagraBank.ApiService.Services;
+using AzagraBank.EventBus;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

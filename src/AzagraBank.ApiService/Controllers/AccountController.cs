@@ -1,4 +1,4 @@
-﻿using AzagraBank.ApiService.Services;
+﻿using AzagraBank.EventBus;
 using AzagraBank.Messages.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
