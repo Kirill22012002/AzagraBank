@@ -8,7 +8,7 @@ var azagraBankDb = postgres.AddDatabase("azagra-bank-db");
 
 var azagraBankCache = builder.AddRedis("Redis");
 
-var kafka = builder.AddKafka("Kafka")
+var kafka = builder.AddKafka("Kafka", 9092)
     .WithLifetime(ContainerLifetime.Persistent)
     .WithKafkaUI();
 
@@ -24,6 +24,5 @@ var client = builder.AddNpmApp("Client", "../AzagraBank.Client")
     .WithReference(api).WaitFor(api)
     .WithHttpEndpoint(port: 5173, targetPort: 5174, env: "PORT")
     .PublishAsDockerFile();
-
 
 builder.Build().Run();

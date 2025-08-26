@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace AzagraBank.ApiService.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class AccountController : ControllerBase
 {
     private readonly IProducerService _producerService;
@@ -16,7 +16,7 @@ public class AccountController : ControllerBase
         _producerService = producerService;
     }
 
-    [HttpGet(Name = "deposit")]
+    [HttpGet]
     public IActionResult Deposit([FromQuery] int amount)
     {
         if (amount <= 0) return BadRequest("not correct data");
@@ -31,7 +31,7 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
-    [HttpGet(Name = "withdraw")]
+    [HttpGet]
     public IActionResult Withdraw([FromQuery] int amount)
     {
         if (amount <= 0) return BadRequest("not correct data");
