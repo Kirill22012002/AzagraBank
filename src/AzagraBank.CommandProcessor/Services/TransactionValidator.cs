@@ -7,7 +7,9 @@ public interface ITransactionValidator
     Task<bool> ValidateAsync(int mount, string accountId);
 }
 
-public class DepositValidator : ITransactionValidator
+public interface IDepositValidator : ITransactionValidator { }
+
+public class DepositValidator : IDepositValidator
 {
     private readonly IAccountRepository _accountRepository;
 
@@ -22,7 +24,9 @@ public class DepositValidator : ITransactionValidator
     }
 }
 
-public class WithdrawValidator : ITransactionValidator
+public interface IWithdrawValidator : ITransactionValidator { }
+
+public class WithdrawValidator : IWithdrawValidator
 {
     private readonly IAccountRepository _accountRepository;
 

@@ -1,6 +1,7 @@
 ﻿using AzagraBank.EventBus;
 using AzagraBank.Messages;
 using Confluent.Kafka;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -10,16 +11,16 @@ public class ConsumerService : IConsumerService
 {
     private readonly IConsumer<string, string> _consumer;
     private readonly ILogger<ConsumerService> _logger;
-    private readonly ICommandProcessor _commandProcessor;
+    private readonly IServiceProvider _serviceProvider;
     private readonly IProducerService _producerService;
 
     public ConsumerService(
         ILogger<ConsumerService> logger,
-        ICommandProcessor commandProcessor,
+        IServiceProvider serviceProvider,
         IProducerService producerService)
     {
         _logger = logger;
-        _commandProcessor = commandProcessor;
+        _serviceProvider = serviceProvider;
         _producerService = producerService;
         var config = new ConsumerConfig
         {
@@ -41,9 +42,13 @@ public class ConsumerService : IConsumerService
                 var consumeResult = _consumer.Consume();
                 _logger.LogInformation("Consumed message: {kafka_message}", consumeResult.Message.Value);
 
-                var command = JsonConvert.DeserializeObject<Command>(consumeResult.Message.Value);
-                var @event = await _commandProcessor.ProcessCommandAsync(command);
-                await _producerService.SendMessageAsync("events", JsonConvert.SerializeObject(@event));
+                using (var scope = _serviceProvider.CreateScope()) 
+                {
+                    var commandProcessor = scope.ServiceProvider.GetRequiredService<ICommandProcessor>();
+                    var command = JsonConvert.DeserializeObject<Command>(consumeResult.Message.Value);
+                    var @event = await commandProcessor.ProcessCommandAsync(command);
+                    await _producerService.SendMessageAsync("events", JsonConvert.SerializeObject(@event));
+                }
             }
         }
         catch(ConsumeException ex)

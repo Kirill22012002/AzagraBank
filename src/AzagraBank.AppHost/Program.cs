@@ -15,6 +15,9 @@ var kafka = builder.AddKafka("Kafka", 9092)
 var commandsProcessor = builder.AddProject<Projects.AzagraBank_CommandProcessor>("CommandsProcessor")
     .WithReference(kafka).WaitFor(kafka);
 
+var eventsProcessor = builder.AddProject<Projects.AzagraBank_EventProcessor>("EventsProcessor")
+    .WithReference(kafka).WaitFor(kafka);
+
 var api = builder.AddProject<Projects.AzagraBank_ApiService>("Api")
     .WithReference(commandsProcessor).WaitFor(commandsProcessor)
     .WithReference(azagraBankCache).WaitFor(azagraBankCache)

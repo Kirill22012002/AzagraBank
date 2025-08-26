@@ -1,5 +1,6 @@
 ﻿using AzagraBank.CommandProcessor;
 using AzagraBank.CommandProcessor.Services;
+using AzagraBank.EF;
 using AzagraBank.EF.Repositories;
 using AzagraBank.EventBus;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,13 +14,17 @@ builder.Services.AddSerilog((services, lc) => lc
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-builder.Services.AddScoped<ITransactionValidator, WithdrawValidator>();
-builder.Services.AddScoped<ITransactionValidator, DepositValidator>();
+builder.AddNpgsqlDbContext<AccountDbContext>("azagra-bank-db");
 
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 
-builder.Services.AddSingleton<IConsumerService, ConsumerService>();
+builder.Services.AddTransient<IWithdrawValidator, WithdrawValidator>();
+builder.Services.AddTransient<IDepositValidator, DepositValidator>();
+
+builder.Services.AddTransient<ICommandProcessor, CommandProcessor>();
+
 builder.Services.AddSingleton<IProducerService, ProducerService>();
+builder.Services.AddSingleton<IConsumerService, ConsumerService>();
 builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();

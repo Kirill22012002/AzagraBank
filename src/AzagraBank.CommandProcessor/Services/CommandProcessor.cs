@@ -10,15 +10,14 @@ public interface ICommandProcessor
     Task<Event> ProcessCommandAsync(Command command);
 }
 
-
 public class CommandProcessor : ICommandProcessor
 {
     private readonly ITransactionValidator _depositValidator;
     private readonly ITransactionValidator _withdrawValidator;
 
     public CommandProcessor(
-        DepositValidator depositValidator, 
-        WithdrawValidator withdrawValidator)
+        IDepositValidator depositValidator, 
+        IWithdrawValidator withdrawValidator)
     {
         _depositValidator = depositValidator;
         _withdrawValidator = withdrawValidator;
