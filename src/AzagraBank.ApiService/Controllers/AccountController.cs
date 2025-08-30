@@ -1,7 +1,7 @@
 ﻿using AzagraBank.EventBus;
+using AzagraBank.EventBus.Interfaces;
 using AzagraBank.Messages.Commands;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace AzagraBank.ApiService.Controllers;
 
@@ -9,11 +9,15 @@ namespace AzagraBank.ApiService.Controllers;
 [Route("api/[controller]/[action]")]
 public class AccountController : ControllerBase
 {
-    private readonly IProducerService _producerService;
+    private readonly IMessagePublisher<DepositCommand> _depositCommandPublisher;
+    private readonly IMessagePublisher<WithdrawCommand> _withdrawCommandPublisher;
 
-    public AccountController(IProducerService producerService)
+    public AccountController(
+        IMessagePublisher<DepositCommand> depositCommandPublisher,
+        IMessagePublisher<WithdrawCommand> withdrawCommandPublisher)
     {
-        _producerService = producerService;
+        _depositCommandPublisher = depositCommandPublisher;
+        _withdrawCommandPublisher = withdrawCommandPublisher;
     }
 
     [HttpGet]
@@ -26,7 +30,7 @@ public class AccountController : ControllerBase
             Amount = amount
         };
 
-        _producerService.SendMessageAsync("commands", JsonConvert.SerializeObject(depositCommand));
+        _depositCommandPublisher.PublishAsync(depositCommand, CONSTS.KAFKA_COMMANDS_TOPIC);
 
         return Ok();
     }
@@ -41,7 +45,7 @@ public class AccountController : ControllerBase
             Amount = amount
         };
 
-        _producerService.SendMessageAsync("commands", JsonConvert.SerializeObject(withdrawCommand));
+        _withdrawCommandPublisher.PublishAsync(withdrawCommand, CONSTS.KAFKA_COMMANDS_TOPIC);
 
         return Ok();
     }

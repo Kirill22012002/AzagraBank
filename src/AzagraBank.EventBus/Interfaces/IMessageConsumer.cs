@@ -2,7 +2,9 @@
 
 namespace AzagraBank.EventBus.Interfaces;
 
+public delegate Task ProcessMessage<T>(T message, CancellationToken stoppingToken) where T : IMessage;
+
 public interface IMessageConsumer<T> where T : IMessage
 {
-    Task StartAsync(Action<T, CancellationToken> processMessage, CancellationToken stoppingToken, string topic);
+    Task StartAsync(ProcessMessage<T> processMessage, CancellationToken stoppingToken, string topic);
 }

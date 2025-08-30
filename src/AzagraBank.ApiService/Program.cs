@@ -1,4 +1,6 @@
-using AzagraBank.EventBus;
+using AzagraBank.EventBus.Implementations;
+using AzagraBank.EventBus.Interfaces;
+using AzagraBank.Messages.Commands;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +15,8 @@ builder.Services.AddSerilog((services, lc) => lc
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-builder.Services.AddSingleton<IProducerService, ProducerService>();
+builder.Services.AddSingleton<IMessagePublisher<DepositCommand>, MessagePublisher<DepositCommand>>();
+builder.Services.AddSingleton<IMessagePublisher<WithdrawCommand>, MessagePublisher<WithdrawCommand>>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

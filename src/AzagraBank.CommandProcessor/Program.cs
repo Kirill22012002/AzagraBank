@@ -1,8 +1,12 @@
 ﻿using AzagraBank.CommandProcessor;
-using AzagraBank.CommandProcessor.Services;
+using AzagraBank.CommandProcessor.Services.Implementations;
 using AzagraBank.EF;
 using AzagraBank.EF.Repositories;
 using AzagraBank.EventBus;
+using AzagraBank.EventBus.Implementations;
+using AzagraBank.EventBus.Interfaces;
+using AzagraBank.Messages.Commands;
+using AzagraBank.Messages.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -18,14 +22,17 @@ builder.AddNpgsqlDbContext<AccountDbContext>("azagra-bank-db");
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 
-builder.Services.AddTransient<IWithdrawValidator, WithdrawValidator>();
-builder.Services.AddTransient<IDepositValidator, DepositValidator>();
+builder.Services.AddScoped<IWithdrawValidator, WithdrawValidator>();
+builder.Services.AddScoped<IDepositValidator, DepositValidator>();
 
-builder.Services.AddTransient<ICommandProcessor, CommandProcessor>();
+builder.Services.AddSingleton<IMessageConsumer<DepositCommand>, MessageConsumer<DepositCommand>>();
+builder.Services.AddSingleton<IMessageConsumer<WithdrawCommand>, MessageConsumer<WithdrawCommand>>();
 
-builder.Services.AddSingleton<IProducerService, ProducerService>();
-builder.Services.AddSingleton<IConsumerService, ConsumerService>();
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddSingleton<IMessagePublisher<AccountCreditedEvent>, MessagePublisher<AccountCreditedEvent>>();
+builder.Services.AddSingleton<IMessagePublisher<AccountDebitedEvent>, MessagePublisher<AccountDebitedEvent>>();
+
+builder.Services.AddHostedService<DepositCommandConsumerService>();
+builder.Services.AddHostedService<WithdrawCommandConsumerService>();
 
 var host = builder.Build();
 host.Run();
