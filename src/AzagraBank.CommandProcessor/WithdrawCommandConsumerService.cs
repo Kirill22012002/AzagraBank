@@ -32,7 +32,7 @@ public class WithdrawCommandConsumerService : BackgroundService
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation($"Kafka. A processing commands service has been started {nameof(WithdrawCommandConsumerService)}");
-        return _consumer.StartAsync(ProcessMessageAsync, stoppingToken, CONSTS.KAFKA_EVENTS_TOPIC);
+        return _consumer.StartAsync(ProcessMessageAsync, stoppingToken, CONSTS.KAFKA_COMMANDS_TOPIC);
     }
 
     private async Task ProcessMessageAsync(WithdrawCommand message, CancellationToken cancellationToken)

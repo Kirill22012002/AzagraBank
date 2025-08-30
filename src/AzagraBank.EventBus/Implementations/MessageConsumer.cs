@@ -17,6 +17,7 @@ public class MessageConsumer<T> : IMessageConsumer<T> where T : IMessage
         var config = new ConsumerConfig
         {
             BootstrapServers = "localhost:9092",
+            GroupId = "custom-group",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
         _consumer = new ConsumerBuilder<string, string>(config).Build();
