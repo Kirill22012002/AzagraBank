@@ -22,7 +22,7 @@ public class MessageConsumer<T> : IMessageConsumer<T> where T : IMessage
         _consumer = new ConsumerBuilder<string, string>(config).Build();
     }
 
-    public Task StartAsync(Action<T, CancellationToken> processMessage, CancellationToken stoppingToken, string topic)
+    public Task StartAsync(ProcessMessage<T> processMessage, CancellationToken stoppingToken, string topic)
     {
         _consumer.Subscribe(topic);
 

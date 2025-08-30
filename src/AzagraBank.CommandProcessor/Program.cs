@@ -1,5 +1,6 @@
 ﻿using AzagraBank.CommandProcessor;
 using AzagraBank.CommandProcessor.Services.Implementations;
+using AzagraBank.CommandProcessor.Services.Interfaces;
 using AzagraBank.EF;
 using AzagraBank.EF.Repositories;
 using AzagraBank.EventBus;
