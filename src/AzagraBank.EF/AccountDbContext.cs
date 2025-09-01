@@ -9,5 +9,6 @@ public class AccountDbContext : DbContext
 
     public AccountDbContext(DbContextOptions options) : base(options)
     {
+        Database.EnsureCreated();
     }
 }

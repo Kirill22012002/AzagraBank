@@ -8,28 +8,24 @@ using AzagraBank.EventBus.Implementations;
 using AzagraBank.EventBus.Interfaces;
 using AzagraBank.Messages.Commands;
 using AzagraBank.Messages.Events;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.AddKafkaConsumerWithBaseSettings();
+builder.AddKafkaProducerWithBaseSettings();
+
 builder.Services.AddSerilog((services, lc) => lc
     .ReadFrom.Services(services)
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-builder.AddKafkaConsumer<string, string>(
-    "kafka",
-    static config =>
-    {
-        config.Config.GroupId = Guid.NewGuid().ToString();
-        config.Config.AllowAutoCreateTopics = true;
-    });
-
-builder.AddKafkaProducer<string, string>("kafka");
-
-builder.AddNpgsqlDbContext<AccountDbContext>("azagra-bank-db");
+builder.Services.AddDbContextFactory<AccountDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("postgresql")));
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 

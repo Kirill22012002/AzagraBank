@@ -1,3 +1,4 @@
+using AzagraBank.EventBus;
 using AzagraBank.EventBus.Implementations;
 using AzagraBank.EventBus.Interfaces;
 using AzagraBank.Messages.Commands;
@@ -9,13 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.AddRedisOutputCache("azagra-bank-cache");
 
+builder.AddKafkaProducerWithBaseSettings();
+
 builder.Services.AddSerilog((services, lc) => lc
     .ReadFrom.Configuration(builder.Configuration)
     .ReadFrom.Services(services)
     .Enrich.FromLogContext()
     .WriteTo.Console());
-
-builder.AddKafkaProducer<string, string>("kafka");
 
 builder.Services.AddSingleton<IMessagePublisher<DepositCommand>, MessagePublisher<DepositCommand>>();
 builder.Services.AddSingleton<IMessagePublisher<WithdrawCommand>, MessagePublisher<WithdrawCommand>>();
