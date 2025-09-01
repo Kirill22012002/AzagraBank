@@ -7,6 +7,11 @@ public class WithdrawValidator : IWithdrawValidator
 {
     private readonly IAccountRepository _accountRepository;
 
+    public WithdrawValidator(IAccountRepository accountRepository)
+    {
+        _accountRepository = accountRepository;
+    }
+
     public async Task<bool> ValidateAsync(int mount, string accountId)
     {
         var account = await _accountRepository.GetAccountByIdAsNoTrackingAsync(accountId);

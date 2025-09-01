@@ -7,6 +7,11 @@ public class DepositValidator : IDepositValidator
 {
     private readonly IAccountRepository _accountRepository;
 
+    public DepositValidator(IAccountRepository accountRepository)
+    {
+        _accountRepository = accountRepository;
+    }
+
     public async Task<bool> ValidateAsync(int mount, string accountId)
     {
         var account = await _accountRepository.GetAccountByIdAsNoTrackingAsync(accountId);
