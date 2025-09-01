@@ -6,5 +6,5 @@ public delegate Task ProcessMessage<T>(T message, CancellationToken stoppingToke
 
 public interface IMessageConsumer<T> where T : IMessage
 {
-    Task StartAsync(ProcessMessage<T> processMessage, CancellationToken stoppingToken, string topic);
+    Task StartAsync(ProcessMessage<T> processMessage, string topic, CancellationToken stoppingToken);
 }

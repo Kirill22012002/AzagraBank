@@ -11,13 +11,15 @@ public class MessageConsumer<T> : IMessageConsumer<T> where T : IMessage
     private readonly IConsumer<string, string> _consumer;
     private readonly ILogger<MessageConsumer<T>> _logger;
 
-    public MessageConsumer(ILogger<MessageConsumer<T>> logger, IConsumer<string, string> consumer)
+    public MessageConsumer(
+        ILogger<MessageConsumer<T>> logger, 
+        IConsumer<string, string> consumer)
     {
         _logger = logger;
         _consumer = consumer;
     }
 
-    public Task StartAsync(ProcessMessage<T> processMessage, CancellationToken stoppingToken, string topic)
+    public Task StartAsync(ProcessMessage<T> processMessage, string topic, CancellationToken stoppingToken)
     {
         _consumer.Subscribe(topic);
 

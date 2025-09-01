@@ -1,5 +1,4 @@
 ﻿using AzagraBank.CommandProcessor.Exceptions;
-using AzagraBank.CommandProcessor.Services;
 using AzagraBank.CommandProcessor.Services.Interfaces;
 using AzagraBank.EventBus;
 using AzagraBank.EventBus.Interfaces;
@@ -33,7 +32,7 @@ public class DepositCommandConsumerService : BackgroundService
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation($"Kafka. A processing commands service has been started {nameof(DepositCommandConsumerService)}");
-        return _consumer.StartAsync(ProcessMessageAsync, stoppingToken, CONSTS.KAFKA_COMMANDS_TOPIC);
+        return _consumer.StartAsync(ProcessMessageAsync, CONSTS.KAFKA_COMMANDS_TOPIC, stoppingToken);
     }
 
     private async Task ProcessMessageAsync(DepositCommand message, CancellationToken cancellationToken)

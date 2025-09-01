@@ -11,7 +11,9 @@ public class MessagePublisher<T> : IMessagePublisher<T> where T : IMessage
     private readonly IProducer<string, string> _producer;
     private readonly ILogger<MessagePublisher<T>> _logger;
 
-    public MessagePublisher(ILogger<MessagePublisher<T>> logger, IProducer<string, string> producer)
+    public MessagePublisher(
+        ILogger<MessagePublisher<T>> logger, 
+        IProducer<string, string> producer)
     {
         _logger = logger;
         _producer = producer;

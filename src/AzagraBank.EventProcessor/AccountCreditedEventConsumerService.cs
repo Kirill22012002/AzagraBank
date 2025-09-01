@@ -20,7 +20,7 @@ public class AccountCreditedEventConsumerService : BackgroundService
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation($"Kafka. A processing events service has been started {nameof(AccountCreditedEventConsumerService)}");
-        return _consumer.StartAsync(ProcessMessageAsync, stoppingToken, CONSTS.KAFKA_EVENTS_TOPIC);
+        return _consumer.StartAsync(ProcessMessageAsync, CONSTS.KAFKA_EVENTS_TOPIC, stoppingToken);
     }
 
     private Task ProcessMessageAsync(AccountCreditedEvent message, CancellationToken cancellationToken)

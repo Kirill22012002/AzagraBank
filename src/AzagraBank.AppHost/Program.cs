@@ -8,7 +8,7 @@ var azagraBankDb = postgres.AddDatabase("azagra-bank-db");
 
 var azagraBankCache = builder.AddRedis("Redis");
 
-var kafka = builder.AddKafka("Kafka", 9092)
+var kafka = builder.AddKafka("kafka")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithKafkaUI();
 
@@ -19,8 +19,8 @@ var eventsProcessor = builder.AddProject<Projects.AzagraBank_EventProcessor>("Ev
     .WithReference(kafka).WaitFor(kafka);
 
 var api = builder.AddProject<Projects.AzagraBank_ApiService>("Api")
-    .WithReference(commandsProcessor).WaitFor(commandsProcessor)
     .WithReference(kafka).WaitFor(kafka)
+    .WithReference(commandsProcessor).WaitFor(commandsProcessor)
     .WithReference(azagraBankCache).WaitFor(azagraBankCache)
     .WithExternalHttpEndpoints();
 

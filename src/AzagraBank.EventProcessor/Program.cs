@@ -11,7 +11,13 @@ builder.Services.AddSerilog((services, lc) => lc
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-builder.AddKafkaConsumer<string, string>("kafka");
+builder.AddKafkaConsumer<string, string>(
+    "kafka",
+    static config =>
+    {
+        config.Config.GroupId = Guid.NewGuid().ToString();
+        config.Config.AllowAutoCreateTopics = true;
+    });
 
 builder.Services.AddSingleton<IMessageConsumer<AccountDebitedEvent>, MessageConsumer<AccountDebitedEvent>>();
 builder.Services.AddSingleton<IMessageConsumer<AccountCreditedEvent>, MessageConsumer<AccountCreditedEvent>>();

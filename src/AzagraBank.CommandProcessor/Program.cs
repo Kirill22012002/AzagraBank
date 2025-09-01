@@ -24,6 +24,7 @@ builder.AddKafkaConsumer<string, string>(
     static config =>
     {
         config.Config.GroupId = Guid.NewGuid().ToString();
+        config.Config.AllowAutoCreateTopics = true;
     });
 
 builder.AddKafkaProducer<string, string>("kafka");
