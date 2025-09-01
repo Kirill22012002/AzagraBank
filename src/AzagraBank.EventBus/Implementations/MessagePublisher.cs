@@ -29,6 +29,11 @@ public class MessagePublisher<T> : IMessagePublisher<T> where T : IMessage
 
             _logger.LogInformation("Message {kafka_message} sent to topic {kafka_topic}", message, topic);
         }
+        catch(ProduceException<string, string> ex)
+        {
+            _logger.LogError("Error sending message to kafka: {error}", ex.Error.Reason);
+
+        }
         catch (Exception ex)
         {
             _logger.LogError("Error sending message to kafka: {error}", ex.Message);
