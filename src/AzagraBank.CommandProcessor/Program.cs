@@ -19,6 +19,15 @@ builder.Services.AddSerilog((services, lc) => lc
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
+builder.AddKafkaConsumer<string, string>(
+    "kafka",
+    static config =>
+    {
+        config.Config.GroupId = Guid.NewGuid().ToString();
+    });
+
+builder.AddKafkaProducer<string, string>("kafka");
+
 builder.AddNpgsqlDbContext<AccountDbContext>("azagra-bank-db");
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();

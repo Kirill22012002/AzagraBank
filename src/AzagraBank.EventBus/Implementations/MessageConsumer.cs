@@ -11,16 +11,10 @@ public class MessageConsumer<T> : IMessageConsumer<T> where T : IMessage
     private readonly IConsumer<string, string> _consumer;
     private readonly ILogger<MessageConsumer<T>> _logger;
 
-    public MessageConsumer(ILogger<MessageConsumer<T>> logger)
+    public MessageConsumer(ILogger<MessageConsumer<T>> logger, IConsumer<string, string> consumer)
     {
         _logger = logger;
-        var config = new ConsumerConfig
-        {
-            BootstrapServers = "localhost:9092",
-            GroupId = "custom-group",
-            AutoOffsetReset = AutoOffsetReset.Earliest
-        };
-        _consumer = new ConsumerBuilder<string, string>(config).Build();
+        _consumer = consumer;
     }
 
     public Task StartAsync(ProcessMessage<T> processMessage, CancellationToken stoppingToken, string topic)

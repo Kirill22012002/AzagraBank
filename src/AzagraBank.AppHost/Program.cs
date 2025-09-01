@@ -20,6 +20,7 @@ var eventsProcessor = builder.AddProject<Projects.AzagraBank_EventProcessor>("Ev
 
 var api = builder.AddProject<Projects.AzagraBank_ApiService>("Api")
     .WithReference(commandsProcessor).WaitFor(commandsProcessor)
+    .WithReference(kafka).WaitFor(kafka)
     .WithReference(azagraBankCache).WaitFor(azagraBankCache)
     .WithExternalHttpEndpoints();
 

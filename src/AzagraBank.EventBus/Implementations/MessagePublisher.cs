@@ -11,14 +11,10 @@ public class MessagePublisher<T> : IMessagePublisher<T> where T : IMessage
     private readonly IProducer<string, string> _producer;
     private readonly ILogger<MessagePublisher<T>> _logger;
 
-    public MessagePublisher(ILogger<MessagePublisher<T>> logger)
+    public MessagePublisher(ILogger<MessagePublisher<T>> logger, IProducer<string, string> producer)
     {
         _logger = logger;
-        var config = new ProducerConfig
-        {
-            BootstrapServers = "localhost:9092"
-        };
-        _producer = new ProducerBuilder<string, string>(config).Build();
+        _producer = producer;
     }
 
     public async Task PublishAsync(T message, string topic)

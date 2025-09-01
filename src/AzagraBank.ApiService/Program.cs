@@ -15,6 +15,8 @@ builder.Services.AddSerilog((services, lc) => lc
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
+builder.AddKafkaProducer<string, string>("kafka");
+
 builder.Services.AddSingleton<IMessagePublisher<DepositCommand>, MessagePublisher<DepositCommand>>();
 builder.Services.AddSingleton<IMessagePublisher<WithdrawCommand>, MessagePublisher<WithdrawCommand>>();
 

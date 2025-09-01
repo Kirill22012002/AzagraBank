@@ -11,6 +11,8 @@ builder.Services.AddSerilog((services, lc) => lc
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
+builder.AddKafkaConsumer<string, string>("kafka");
+
 builder.Services.AddSingleton<IMessageConsumer<AccountDebitedEvent>, MessageConsumer<AccountDebitedEvent>>();
 builder.Services.AddSingleton<IMessageConsumer<AccountCreditedEvent>, MessageConsumer<AccountCreditedEvent>>();
 
