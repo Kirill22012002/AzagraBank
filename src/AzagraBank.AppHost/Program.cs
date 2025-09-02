@@ -4,7 +4,8 @@ var postgresPassword = builder.AddParameter("postgresPassword");
 
 var postgres = builder
     .AddPostgres(name: "postgres", password: postgresPassword)
-    .WithDataVolume()
+    .WithDataVolume(isReadOnly: false)
+    .WithLifetime(ContainerLifetime.Persistent)
     .WithPgAdmin();
 
 var azagraBankDb = postgres.AddDatabase("azagraBankDb");

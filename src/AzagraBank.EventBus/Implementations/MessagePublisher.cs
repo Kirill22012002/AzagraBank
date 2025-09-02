@@ -27,16 +27,16 @@ public class MessagePublisher<T> : IMessagePublisher<T> where T : IMessage
                 topic,
                 new Message<string, string> { Value = JsonConvert.SerializeObject(message) });
 
-            _logger.LogInformation("Message {kafka_message} sent to topic {kafka_topic}", message, topic);
+            _logger.LogInformation("Kafka. Message {kafka_message} sent to topic {kafka_topic}", message, topic);
         }
         catch(ProduceException<string, string> ex)
         {
-            _logger.LogError("Error sending message to kafka: {error}", ex.Error.Reason);
+            _logger.LogError("Kafka. Error sending message to kafka: {error}", ex.Error.Reason);
 
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error sending message to kafka: {error}", ex.Message);
+            _logger.LogError("Kafka. Error sending message to kafka: {error}", ex.Message);
         }
     }
 }

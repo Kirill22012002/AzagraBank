@@ -16,7 +16,7 @@ public class DepositValidator : IDepositValidator
     {
         var account = await _accountRepository.GetAccountByIdAsNoTrackingAsync(accountId);
 
-        if (account.State == EF.Models.Enums.AccountState.Active) return true;
+        if (account.State != EF.Models.Enums.AccountState.Active) return false;
 
         if (account.Count >= mount) return true;
         else return false;

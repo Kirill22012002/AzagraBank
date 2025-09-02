@@ -21,13 +21,14 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Deposit([FromQuery] int amount)
+    public IActionResult Deposit([FromQuery] int amount, [FromQuery] string accountId)
     {
         if (amount <= 0) return BadRequest("not correct data");
 
         var depositCommand = new DepositCommand
         {
-            Amount = amount
+            Amount = amount,
+            AccountId = accountId
         };
 
         _depositCommandPublisher.PublishAsync(depositCommand, CONSTS.KAFKA_COMMANDS_TOPIC);
@@ -36,13 +37,14 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Withdraw([FromQuery] int amount)
+    public IActionResult Withdraw([FromQuery] int amount, [FromQuery] string accountId)
     {
         if (amount <= 0) return BadRequest("not correct data");
 
         var withdrawCommand = new WithdrawCommand
         {
-            Amount = amount
+            Amount = amount,
+            AccountId = accountId
         };
 
         _withdrawCommandPublisher.PublishAsync(withdrawCommand, CONSTS.KAFKA_COMMANDS_TOPIC);
