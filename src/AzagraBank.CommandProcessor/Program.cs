@@ -16,6 +16,8 @@ using Serilog;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.AddKafkaConsumerWithBaseSettings();
 builder.AddKafkaProducerWithBaseSettings();
 
@@ -25,7 +27,7 @@ builder.Services.AddSerilog((services, lc) => lc
     .WriteTo.Console());
 
 builder.Services.AddDbContextFactory<AccountDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("postgresql")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("azagraBankDb")));
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 

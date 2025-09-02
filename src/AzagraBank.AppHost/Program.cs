@@ -5,14 +5,14 @@ var postgresPassword = builder.AddParameter("postgresPassword");
 var postgres = builder
     .AddPostgres(name: "postgres", password: postgresPassword)
     .WithDataVolume()
-    .WithPgWeb()
-    .WithLifetime(ContainerLifetime.Persistent);
+    .WithPgAdmin();
 
-var azagraBankDb = postgres.AddDatabase("postgresdb");
+var azagraBankDb = postgres.AddDatabase("azagraBankDb");
 
 var azagraBankCache = builder.AddRedis("Redis");
 
 var kafka = builder.AddKafka("kafka")
+    .WithDataVolume(isReadOnly: false)
     .WithLifetime(ContainerLifetime.Persistent)
     .WithKafkaUI();
 
@@ -23,7 +23,7 @@ var api = builder.AddProject<Projects.AzagraBank_ApiService>("Api")
 
 var commandsProcessor = builder.AddProject<Projects.AzagraBank_CommandProcessor>("CommandsProcessor")
     .WithReference(kafka).WaitFor(kafka)
-    .WithReference(postgres).WaitFor(postgres);
+    .WithReference(azagraBankDb).WaitFor(azagraBankDb);
 
 var eventsProcessor = builder.AddProject<Projects.AzagraBank_EventProcessor>("EventsProcessor")
     .WithReference(kafka).WaitFor(kafka);

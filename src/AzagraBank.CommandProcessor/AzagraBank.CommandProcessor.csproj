@@ -24,6 +24,7 @@
     <ProjectReference Include="..\AzagraBank.EF\AzagraBank.EF.csproj" />
     <ProjectReference Include="..\AzagraBank.EventBus\AzagraBank.EventBus.csproj" />
     <ProjectReference Include="..\AzagraBank.Messages\AzagraBank.Messages.csproj" />
+    <ProjectReference Include="..\AzagraBank.ServiceDefaults\AzagraBank.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
