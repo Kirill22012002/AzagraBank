@@ -19,5 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AzagraBank.EventBus\AzagraBank.EventBus.csproj" />
+    <ProjectReference Include="..\AzagraBank.ServiceDefaults\AzagraBank.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

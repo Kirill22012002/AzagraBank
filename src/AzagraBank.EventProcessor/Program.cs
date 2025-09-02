@@ -7,6 +7,8 @@ using Serilog;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.AddKafkaConsumerWithBaseSettings();
 
 builder.Services.AddSerilog((services, lc) => lc
