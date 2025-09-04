@@ -23,6 +23,8 @@
     <ProjectReference Include="..\AzagraBank.ApiService\AzagraBank.ApiService.csproj" />
     <ProjectReference Include="..\AzagraBank.CommandProcessor\AzagraBank.CommandProcessor.csproj" />
     <ProjectReference Include="..\AzagraBank.EventProcessor\AzagraBank.EventProcessor.csproj" />
+    <ProjectReference Include="..\AzagraBank.IdentityServer.MigrationService\AzagraBank.IdentityServer.MigrationService.csproj" />
+    <ProjectReference Include="..\AzagraBank.IdentityServer\AzagraBank.IdentityServer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,7 @@ var postgres = builder
     .WithPgAdmin();
 
 var azagraBankDb = postgres.AddDatabase("azagraBankDb");
+var identityDb = postgres.AddDatabase("identityDb");
 
 var azagraBankCache = builder.AddRedis("Redis");
 
@@ -33,5 +34,12 @@ var client = builder.AddNpmApp("Client", "../AzagraBank.Client")
     .WithReference(api).WaitFor(api)
     .WithHttpEndpoint(port: 5173, targetPort: 5174, env: "PORT")
     .PublishAsDockerFile();
+
+var identityServer = builder.AddProject<Projects.AzagraBank_IdentityServer>("IdentityServer")
+    .WithReference(identityDb).WaitFor(identityDb);
+
+builder.AddProject<Projects.AzagraBank_IdentityServer_MigrationService>("IdentityServerMigrationService")
+    .WithReference(identityDb).WaitFor(identityDb)
+    .WithParentRelationship(postgres);
 
 builder.Build().Run();
